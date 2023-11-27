@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo App</title>
+</head>
+<body>
+    <div id="app">
+        <form @submit.prevent="addTodo">
+            <input v-model="newTodo" placeholder="Add a new ToDo">
+            <button>Add Todo</button>
+        </form>
+
+        <ul>
+            <li v-for="(todo, index) in Todos" :key="index" v-show="!hideCompleted || !todo.done">
+                <input type="checkbox" v-model="todo.done">
+                <span :class="{'completed': todo.done}">{{ todo.name }}</span>
+                <button @click="removeTodo(index)">Remove</button>
+            </li>
+        </ul>
+
+        <label>
+            <input type="checkbox" v-model="hideCompleted">Hide Completed
+        </label>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data:{
+                newTodo: '',
+                hideCompleted: false,
+                Todos: []
+            },
+            methods: {
+                addTodo: function(){
+                    if(this.newTodo.trim() !== ''){
+                        this.Todos.push({name: this.newTodo, done: false});
+                        this.newTodo = '';
+                    }
+                },
+                removeTodo: function(index){
+                    this.Todos.splice(index, 1);
+                }
+            }
+        });
+    </script>
+
+    <style>
+        .completed {
+            text-decoration: line-through;
+        }
+    </style>
+</body>
+</html>
