@@ -7,19 +7,26 @@
 </head>
 <body>
     <div id="app">
+        <!-- ToDoを追加するフォーム -->
         <form @submit.prevent="addTodo">
             <input v-model="newTodo" placeholder="Add a new ToDo">
             <button>Add Todo</button>
         </form>
 
+        <!-- ToDoリストの表示 -->
         <ul>
+            <!-- ToDoリストの各要素に対して繰り返し処理 -->
             <li v-for="(todo, index) in Todos" :key="index" v-show="!hideCompleted || !todo.done">
+                <!-- チェックボックスでToDoの完了状態を切り替え-->
                 <input type="checkbox" v-model="todo.done">
+                <!-- 完了状態に応じてテキストのスタイルを変更 -->
                 <span :class="{'completed': todo.done}">{{ todo.name }}</span>
+                <!-- ToDoの削除ボタン -->
                 <button @click="removeTodo(index)">Remove</button>
             </li>
         </ul>
 
+        <!-- 完了したToDoを非表示にするチェックボックス -->
         <label>
             <input type="checkbox" v-model="hideCompleted">Hide Completed
         </label>
@@ -37,19 +44,25 @@
                 Todos: []
             },
             methods: {
+                // ToDoを追加するメソッド
                 addTodo: function(){
                     if(this.newTodo.trim() !== ''){
+                        //新しいTodoを配列に追加
                         this.Todos.push({name: this.newTodo, done: false});
+                        //入力フォームを空にする
                         this.newTodo = '';
                     }
                 },
+                //Todoの削除メソッド
                 removeTodo: function(index){
+                    //ボタンが押されたTodoを配列から削除
                     this.Todos.splice(index, 1);
                 }
             }
         });
     </script>
 
+<!-- スタイルの設定 -->
     <style>
         .completed {
             text-decoration: line-through;
